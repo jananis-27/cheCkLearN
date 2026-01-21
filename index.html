@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>cheCkLearN</title>
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/942/942748.png">
+<center>
+<h1 style="color:#c77dff; text-align:center; letter-spacing:3px; text-shadow:0 0 8px #7b3fe4;">cheCkLearN</h1>
+
+<img src="learnimage.png" width="220px">
+<img src="correctimage.png" width="220px" style="position:absolute; right:50px; top:150px;">
+<img src="checkimage.png" width="220px" style="position:absolute; left:50px; top:150px;">
+</center>
+<style>
+body{
+    margin:0;
+    font-family:Segoe UI, sans-serif;
+    background:linear-gradient(135deg,#1a002b,#3a006f,#000000);
+    color:white;
+}
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:30px;
+}
+.card{
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(10px);
+    padding:25px;
+    border-radius:15px;
+    margin-top:20px;
+}
+.hidden{display:none;}
+button{
+    padding:12px;
+    margin:8px 5px;
+    border:none;
+    border-radius:8px;
+    background:#9b5cff;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+button:hover{background:#7b3fe4;}
+input,select{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+    border-radius:6px;
+    border:none;
+}
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.nav-btns{
+    display:flex;
+    justify-content:space-between;
+}
+ul{list-style:none;padding:0;}
+li{margin:8px 0;}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- HOME -->
+<div class="card" id="homePage">
+    <div class="topbar">
+        <h2>Career Building Platform</h2>
+        <button onclick="showLogin()">Login</button>
+    </div>
+    <p>
+       This is a simple career building platform designed to help students understand what skills and domains they should learn for their future. It provides a clear checklist of programming language topics and software domains so that students can plan their learning step by step. By using this platform, students can explore different career paths, track what they have learned, and build a strong foundation for their career with clarity and confidence.
+    </p>
+
+    <button onclick="alert('Please login to continue')">Explore Platform</button>
+    <h2>Explore the Career Building Platform</h2>
+    <h2>Choose Skills. Create Checklists. Grow Confidently.</h2>
+
+</div>
+
+<!-- LOGIN -->
+<div class="card hidden" id="loginPage">
+    <h2>Login</h2>
+
+    <input id="name" placeholder="Full Name (letters only)">
+    <input id="email" placeholder="example@gmail.com">
+    <input id="phone" placeholder="10 digit phone number">
+
+    <label>Choose Profile Picture</label>
+    <input type="file" id="profile">
+
+    <button onclick="validateLogin()">Login</button>
+
+    <div class="nav-btns">
+        <button onclick="goHome()">Previous</button>
+    </div>
+</div>
+
+<!-- EXPLORE -->
+<div class="card hidden" id="explorePage">
+    <h2>Explore Your Career</h2>
+    <button onclick="showLanguages()">Explore Programming Languages</button>
+    <button onclick="showDomains()">Explore Domains</button>
+
+    <div class="nav-btns">
+        <button onclick="goHome()">Home</button>
+    </div>
+</div>
+
+<!-- LANGUAGE SELECTION -->
+<div class="card hidden" id="languagePage">
+    <h2>Select Programming Language</h2>
+
+    <select id="languageSelect">
+        <option value="">Select Language</option>
+        <option>Python</option>
+        <option>C</option>
+        <option>C++</option>
+        <option>HTML</option>
+        <option>CSS</option>
+        <option>JavaScript</option>
+    </select>
+
+    <div class="nav-btns">
+        <button onclick="backToExplore()">Previous</button>
+        <button onclick="showLanguageTopics()">Next</button>
+    </div>
+</div>
+
+<!-- LANGUAGE TOPICS (NEW PAGE) -->
+<div class="card hidden" id="languageTopicsPage">
+    <h2 id="languageTitle">Language Topics</h2>
+    <ul id="languageTopics"></ul>
+
+    <div class="nav-btns">
+        <button onclick="showLanguages()">Previous</button>
+        <button onclick="showDomains()">Next</button>
+    </div>
+</div>
+
+<!-- DOMAIN PAGE -->
+<div class="card hidden" id="domainPage">
+    <h2>Select Domain</h2>
+
+    <select onchange="loadDomain(this.value)">
+        <option>Select Domain</option>
+        <option>Web Development</option>
+        <option>AI & ML</option>
+        <option>Data Science</option>
+        <option>Cyber Security</option>
+        <option>Cloud Computing</option>
+    </select>
+
+    <ul id="domainTopics"></ul>
+
+    <div class="nav-btns">
+        <button onclick="showLanguageTopics()">Previous</button>
+        <button onclick="goHome()">Home</button>
+    </div>
+</div>
+
+</div>
+
+<script>
+// PAGE CONTROL
+function hideAll(){
+    document.querySelectorAll('.card').forEach(c=>c.classList.add('hidden'));
+}
+function showLogin(){ hideAll(); loginPage.classList.remove('hidden'); }
+function goHome(){ hideAll(); homePage.classList.remove('hidden'); }
+function showLanguages(){ hideAll(); languagePage.classList.remove('hidden'); }
+function backToExplore(){ hideAll(); explorePage.classList.remove('hidden'); }
+function showDomains(){ hideAll(); domainPage.classList.remove('hidden'); }
+
+// LOGIN VALIDATION (BASIC)
+function validateLogin(){
+    let name = document.getElementById("name").value;
+    let email = document.getElementById("email").value;
+    let phone = document.getElementById("phone").value;
+    let profile = document.getElementById("profile").value;
+
+    if(!/^[A-Za-z ]+$/.test(name)){
+        alert("Name should contain only letters");
+        return;
+    }
+    if(!email.endsWith("@gmail.com")){
+        alert("Email must end with @gmail.com");
+        return;
+    }
+    if(!/^\d{10}$/.test(phone)){
+        alert("Phone number must be exactly 10 digits");
+        return;
+    }
+    if(profile === ""){
+        alert("Please choose a profile picture");
+        return;
+    }
+
+    hideAll();
+    explorePage.classList.remove('hidden');
+}
+
+// LANGUAGE TOPICS DATA (BASIC ARRAYS)
+const languageData = {
+    Python:["Syntax Basics","Data Types","Loops","Functions","OOP","File Handling"],
+    C:["Variables","Loops","Arrays","Pointers","Functions"],
+    "C++":["OOP Concepts","Classes","Inheritance","STL"],
+    HTML:["Tags","Forms","Tables","Semantic HTML"],
+    CSS:["Selectors","Flexbox","Grid Basics","Responsive Design"],
+    JavaScript:["Variables","Functions","DOM","Events"]
+};
+
+// SHOW LANGUAGE TOPICS
+function showLanguageTopics(){
+    let lang = document.getElementById("languageSelect").value;
+    if(lang===""){
+        alert("Please select a language");
+        return;
+    }
+
+    document.getElementById("languageTitle").innerText = lang + " Topics";
+    let ul = document.getElementById("languageTopics");
+    ul.innerHTML = "";
+
+    languageData[lang].forEach(topic=>{
+        ul.innerHTML += `<li><input type="checkbox"> ${topic}</li>`;
+    });
+
+    hideAll();
+    languageTopicsPage.classList.remove('hidden');
+}
+
+// DOMAIN TOPICS
+function loadDomain(domain){
+    const data={
+        "Web Development":["HTML","CSS","JavaScript","Projects"],
+        "AI & ML":["Python","Math Basics","ML Algorithms"],
+        "Data Science":["Python","Statistics","Visualization"],
+        "Cyber Security":["Networking","Linux","Ethical Hacking"],
+        "Cloud Computing":["Cloud Basics","AWS","Deployment"]
+    };
+
+    let ul=document.getElementById("domainTopics");
+    ul.innerHTML="";
+
+    if(data[domain]){
+        data[domain].forEach(t=>{
+            ul.innerHTML+=`<li><input type="checkbox"> ${t}</li>`;
+        });
+    }
+}
+</script>
+
+</body>
+</html>
